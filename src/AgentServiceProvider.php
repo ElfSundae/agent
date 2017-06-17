@@ -38,9 +38,7 @@ class AgentServiceProvider extends ServiceProvider
     {
         $this->app->register(\Jenssegers\Agent\AgentServiceProvider::class);
 
-        if (! $this->app->bound('agent')) {
-            $this->app->alias('agent', Agent::class);
-        }
+        $this->app->alias('agent', Agent::class);
     }
 
     /**
