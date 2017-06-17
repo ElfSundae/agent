@@ -182,7 +182,7 @@ class Client extends Fluent
             $this->getAppClientData($this->agent->getUserAgent())
         );
 
-        if (! $data) {
+        if (empty($data)) {
             $this->resetAppClientAttributes();
         }
 
