@@ -2,6 +2,7 @@
 
 namespace ElfSundae\Laravel\Agent;
 
+use Illuminate\Support\Arr;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Fluent;
 use ElfSundae\Laravel\Helper\Traits\FluentArrayAccess;
@@ -209,42 +210,31 @@ class Client extends Fluent
 
         if (is_string($this->version('MicroMessenger'))) {
             $info['isWechat'] = true;
-        } else {
-            unset($info['isWechat']);
         }
 
         return array_filter($info);
     }
 
     /**
-     * Parse app client from the User-Agent.
-     *
-     * @example `Mozilla/5.0 (iPhone; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12H143 _ua(eyJuZXQiOiJXaUZpIiwib3MiOiJpT1MiLCJhcHBWIjoiMC4xLjIiLCJvc1YiOiI4LjQiLCJhcHAiOiJndXBpYW8iLCJhcHBDIjoiRGVidWciLCJ0ZGlkIjoiaDNiYjFmNTBhYzBhMzdkYmE4ODhlMTgyNjU3OWJkZmZmIiwiYWNpZCI6IjIxZDNmYmQzNDNmMjViYmI0MzU2ZGEyMmJmZjUxZDczZjg0YWQwNmQiLCJsb2MiOiJ6aF9DTiIsInBmIjoiaVBob25lNywxIn0)`
+     * Parse app client.
      *
      * @return array
      */
     protected function parseAppClient()
     {
-        $data = $this->getAppClientAttributes(
-            $this->getAppClientData($this->agent->getUserAgent())
-        );
-
-        if (empty($data)) {
-            $this->resetAppClientAttributes();
-        }
-
-        return $data;
+        return $this->getAppClientAttributes($this->getAppClientData());
     }
 
     /**
      * Get app client information from the User-Agent.
      *
-     * @param  string  $userAgent
+     * @example `Mozilla/5.0 (iPhone; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Mobile/12H143 client(eyJuZXQiOiJXaUZpIiwib3MiOiJpT1MiLCJhcHBWIjoiMC4xLjIiLCJvc1YiOiI4LjQiLCJhcHAiOiJndXBpYW8iLCJhcHBDIjoiRGVidWciLCJ0ZGlkIjoiaDNiYjFmNTBhYzBhMzdkYmE4ODhlMTgyNjU3OWJkZmZmIiwiYWNpZCI6IjIxZDNmYmQzNDNmMjViYmI0MzU2ZGEyMmJmZjUxZDczZjg0YWQwNmQiLCJsb2MiOiJ6aF9DTiIsInBmIjoiaVBob25lNywxIn0)`
+     *
      * @return array
      */
-    protected function getAppClientData($userAgent)
+    protected function getAppClientData()
     {
-        if (preg_match('#client\((.+)\)#is', $userAgent, $matches)) {
+        if (preg_match('#client\((.+)\)#is', $this->agent->getUserAgent(), $matches)) {
             if ($info = json_decode(urlsafe_base64_decode($matches[1]), true)) {
                 if (is_array($info) && ! empty($info)) {
                     return $info;
@@ -263,19 +253,18 @@ class Client extends Fluent
      */
     protected function getAppClientAttributes($info)
     {
-        $info = array_filter($info);
         $data = [];
 
         if (
-            ($data['os'] = array_get($info, 'os')) &&
-            ($data['osVersion'] = array_get($info, 'osV')) &&
-            ($data['platform'] = array_get($info, 'pf')) &&
-            ($data['locale'] = array_get($info, 'loc')) &&
-            ($data['app'] = array_get($info, 'app')) &&
-            ($data['appVersion'] = array_get($info, 'appV')) &&
-            ($data['appChannel'] = array_get($info, 'appC')) &&
-            ($data['network'] = array_get($info, 'net')) &&
-            ($data['udid'] = array_get($info, 'udid'))
+            ($data['os'] = Arr::get($info, 'os')) &&
+            ($data['osVersion'] = Arr::get($info, 'osV')) &&
+            ($data['platform'] = Arr::get($info, 'pf')) &&
+            ($data['locale'] = Arr::get($info, 'loc')) &&
+            ($data['app'] = Arr::get($info, 'app')) &&
+            ($data['appVersion'] = Arr::get($info, 'appV')) &&
+            ($data['appChannel'] = Arr::get($info, 'appC')) &&
+            ($data['network'] = Arr::get($info, 'net')) &&
+            ($data['udid'] = Arr::get($info, 'udid'))
         ) {
             if ($data['os'] === 'iPhone OS') {
                 $data['os'] = 'iOS';
@@ -283,25 +272,10 @@ class Client extends Fluent
 
             $data['isAppClient'] = true;
 
-            return array_filter($data);
+            return $data;
         }
 
         return [];
-    }
-
-    /**
-     * Reset app client attributes.
-     */
-    protected function resetAppClientAttributes()
-    {
-        unset(
-            $this->attributes['app'],
-            $this->attributes['appVersion'],
-            $this->attributes['appChannel'],
-            $this->attributes['network'],
-            $this->attributes['udid'],
-            $this->attributes['isAppClient']
-        );
     }
 
     /**
