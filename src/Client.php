@@ -83,7 +83,7 @@ class Client extends Fluent
      * @param  mixed   $value
      * @return $this
      */
-    public function set($key, $value = null)
+    public function set($key, $value = true)
     {
         $data = is_array($key) ? $key : [$key => $value];
 
