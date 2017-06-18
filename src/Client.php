@@ -177,6 +177,8 @@ class Client extends Fluent
      */
     protected function parseAgent()
     {
+        $this->attributes = [];
+
         return $this->add(
             $this->parseCommonClient(),
             $this->parseAppClient()
