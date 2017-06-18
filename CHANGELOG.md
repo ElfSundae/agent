@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-agent` will be documented in this file.
 
+## 2.1.0 - 2017/06/19
+
+- Reset Client attributes before parsing User-Agent
+
 ## 2.0.0 - 2017/06/19
 
 - Added `AgentClient` facade
