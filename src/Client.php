@@ -31,6 +31,16 @@ class Client extends Fluent
     protected $agent;
 
     /**
+     * Return this instance.
+     *
+     * @return $this
+     */
+    public function instance()
+    {
+        return $this;
+    }
+
+    /**
      * Get the Agent instance.
      *
      * @return \Jenssegers\Agent\Agent
