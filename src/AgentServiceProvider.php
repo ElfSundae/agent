@@ -43,5 +43,23 @@ class AgentServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('agent.client', Client::class);
+
+        $this->aliasFacade('AgentClient', Facades\AgentClient::class);
+    }
+
+    /**
+     * Create alias for the facade.
+     *
+     * @param  string  $facade
+     * @param  string  $class
+     * @return void
+     */
+    protected function aliasFacade($facade, $class)
+    {
+        if (class_exists('Illuminate\Foundation\AliasLoader')) {
+            \Illuminate\Foundation\AliasLoader::getInstance()->alias($facade, $class);
+        } else {
+            class_alias($class, $facade);
+        }
     }
 }
