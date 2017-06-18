@@ -145,9 +145,13 @@ class Client extends Fluent
         $appChannel = $this->get('appChannel');
 
         if (func_num_args() > 0) {
-            $checks = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
+            if ($appChannel) {
+                $checks = is_array(func_get_arg(0)) ? func_get_arg(0) : func_get_args();
 
-            return $appChannel ? in_arrayi($appChannel, $checks) : false;
+                return in_arrayi($appChannel, $checks);
+            }
+
+            return false;
         }
 
         return $appChannel;
