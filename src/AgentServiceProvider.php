@@ -14,7 +14,7 @@ class AgentServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['view']->share('client', $this->app->make('client'));
+        $this->app['view']->share('agentClient', $this->app->make('agent.client'));
     }
 
     /**
@@ -48,10 +48,10 @@ class AgentServiceProvider extends ServiceProvider
      */
     protected function registerClient()
     {
-        $this->app->singleton('client', function ($app) {
+        $this->app->singleton('agent.client', function ($app) {
             return (new Client)->setAgent($app->make('agent'));
         });
 
-        $this->app->alias('client', Client::class);
+        $this->app->alias('agent.client', Client::class);
     }
 }
