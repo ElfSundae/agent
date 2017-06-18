@@ -8,16 +8,6 @@ use Illuminate\Support\ServiceProvider;
 class AgentServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the service provider.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->app['view']->share('agentClient', $this->app->make('agent.client'));
-    }
-
-    /**
      * Register the service provider.
      *
      * @return void
