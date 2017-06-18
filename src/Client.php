@@ -67,6 +67,20 @@ class Client extends Fluent
     }
 
     /**
+     * Set a given attribute value.
+     *
+     * @param  array|string  $key
+     * @param  mixed   $value
+     * @return $this
+     */
+    public function set($key, $value = null)
+    {
+        $data = is_array($key) ? $key : [$key => $value];
+
+        return $this->add($data);
+    }
+
+    /**
      * Check the version of the given property in the User-Agent.
      *
      * @param  string  $propertyName
