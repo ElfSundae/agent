@@ -91,6 +91,23 @@ class Client extends Fluent
     }
 
     /**
+     * Remove attributes.
+     *
+     * @param  array|string  $keys
+     * @return $this
+     */
+    public function remove($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        foreach ($keys as $key) {
+            unset($this->attributes[$key]);
+        }
+
+        return $this;
+    }
+
+    /**
      * Check the version of the given property in the User-Agent.
      *
      * @param  string  $propertyName
