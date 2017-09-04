@@ -5,7 +5,6 @@ namespace ElfSundae\Laravel\Agent;
 use Illuminate\Support\Arr;
 use Jenssegers\Agent\Agent;
 use Illuminate\Support\Fluent;
-use ElfSundae\Laravel\Helper\Traits\FluentArrayAccess;
 
 /**
  * The app client.
@@ -22,8 +21,6 @@ use ElfSundae\Laravel\Helper\Traits\FluentArrayAccess;
  */
 class Client extends Fluent
 {
-    use FluentArrayAccess;
-
     /**
      * The Agent instance.
      *
