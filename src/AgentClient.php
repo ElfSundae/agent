@@ -1,6 +1,6 @@
 <?php
 
-namespace ElfSundae\Laravel\Agent\Facades;
+namespace ElfSundae\Laravel\Agent;
 
 use Illuminate\Support\Facades\Facade;
 
