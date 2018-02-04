@@ -41,8 +41,12 @@
                 "ElfSundae\\Laravel\\Agent\\AgentServiceProvider"
             ],
             "aliases": {
-                "AgentClient": "ElfSundae\\Laravel\\Agent\\AgentClient"
-            }
+                "AgentClient": "ElfSundae\\Laravel\\Agent\\AgentClient",
+                "Agent": "Jenssegers\\Agent\\Facades\\Agent"
+            },
+            "dont-discover": [
+                "jenssegers/agent"
+            ]
         }
     }
 }
