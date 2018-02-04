@@ -1,9 +1,9 @@
 {
-    "name": "elfsundae/laravel-agent",
+    "name": "elfsundae/agent",
     "type": "library",
-    "description": "Laravel Agent",
-    "keywords": ["laravel", "agent", "user agent", "browser", "mobile"],
-    "homepage": "https://github.com/ElfSundae/laravel-agent",
+    "description": "A PHP mobile/desktop User-Agent parser, with support for Laravel.",
+    "keywords": ["agent", "user agent", "laravel", "browser", "mobile"],
+    "homepage": "https://github.com/ElfSundae/agent",
     "license": "MIT",
     "authors": [
         {
@@ -14,9 +14,7 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "jenssegers/agent": "~2.5",
-        "illuminate/support": "~5.0",
-        "elfsundae/laravel-helper": "~1.2"
+        "jenssegers/agent": "~2.6"
     },
     "require-dev": {
         "mockery/mockery": "~1.0",
@@ -24,12 +22,12 @@
     },
     "autoload": {
         "psr-4": {
-            "ElfSundae\\Laravel\\Agent\\": "src/"
+            "ElfSundae\\Agent\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ElfSundae\\Laravel\\Agent\\Test\\": "tests/"
+            "ElfSundae\\Agent\\Test\\": "tests/"
         }
     },
     "scripts": {
@@ -38,11 +36,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ElfSundae\\Laravel\\Agent\\AgentServiceProvider"
+                "ElfSundae\\Agent\\AgentServiceProvider"
             ],
             "aliases": {
-                "AgentClient": "ElfSundae\\Laravel\\Agent\\AgentClient",
-                "Agent": "Jenssegers\\Agent\\Facades\\Agent"
+                "Agent": "ElfSundae\\Agent\\Facades\\Agent"
             },
             "dont-discover": [
                 "jenssegers/agent"

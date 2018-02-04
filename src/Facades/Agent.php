@@ -1,13 +1,13 @@
 <?php
 
-namespace ElfSundae\Laravel\Agent;
+namespace ElfSundae\Agent\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \ElfSundae\Laravel\Agent\Client
+ * @see \ElfSundae\Agent\Agent
  */
-class AgentClient extends Facade
+class Agent extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class AgentClient extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'agent.client';
+        return 'agent';
     }
 }
