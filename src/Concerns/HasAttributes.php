@@ -158,6 +158,17 @@ trait HasAttributes
     }
 
     /**
+     * Dynamically check if an attribute is set.
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    public function __isset($key)
+    {
+        return $this->offsetExists($key);
+    }
+
+    /**
      * Dynamically retrieve the value of an attribute.
      *
      * @param  string  $key
@@ -178,17 +189,6 @@ trait HasAttributes
     public function __set($key, $value)
     {
         $this->offsetSet($key, $value);
-    }
-
-    /**
-     * Dynamically check if an attribute is set.
-     *
-     * @param  string  $key
-     * @return bool
-     */
-    public function __isset($key)
-    {
-        return $this->offsetExists($key);
     }
 
     /**
