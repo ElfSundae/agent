@@ -21,7 +21,7 @@ class AgentServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('agent', function ($app) {
-            return new Agent($app['request']->header());
+            return new Agent($app['request']->server());
         });
 
         $this->app->alias('agent', Agent::class);
