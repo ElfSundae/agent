@@ -22,6 +22,31 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function version($propertyName, $type = self::VERSION_TYPE_STRING)
+    {
+        $version = parent::version($propertyName, $type);
+
+        if (is_string($version)) {
+            $version = str_replace(['_', ' ', '/'], '.', $version);
+        }
+
+        return $version;
+    }
+
+    /**
+     * Get the version number of the given property in the User-Agent.
+     *
+     * @param  string  $propertyName
+     * @return float
+     */
+    public function versionNumber($propertyName)
+    {
+        return $this->version($propertyName, self::VERSION_TYPE_FLOAT);
+    }
+
+    /**
      * Get the accept language.
      *
      * @param  string|null  $preferLanguage
@@ -47,13 +72,22 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
     }
 
     /**
-     * Get the operating system (platform) name.
+     * Get the operating system name.
      *
-     * @param  string  $userAgent
      * @return string
      */
-    public function os($userAgent = null)
+    public function os()
     {
-        return $this->platform($userAgent);
+        return $this->platform();
+    }
+
+    /**
+     * Get the operating system version.
+     *
+     * @return string
+     */
+    public function osVersion()
+    {
+        return $this->version($this->os());
     }
 }
