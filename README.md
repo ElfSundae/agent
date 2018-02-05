@@ -28,8 +28,6 @@ And add the `Agent` facade alias:
 'Agent' => ElfSundae\Agent\Facades\Agent::class,
 ```
 
-## Additional Methods
-
 ## License
 
 This package is open-sourced software licensed under the [MIT License](LICENSE.md).
