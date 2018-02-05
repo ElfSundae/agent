@@ -1,11 +1,18 @@
 <?php
 
-namespace ElfSundae\Laravel\Agent;
+namespace ElfSundae\Agent;
 
 use Illuminate\Support\ServiceProvider;
 
 class AgentServiceProvider extends ServiceProvider
 {
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
     /**
      * Register the service provider.
      *
@@ -13,34 +20,20 @@ class AgentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerAgent();
-
-        $this->registerClient();
-    }
-
-    /**
-     * Register the Agent.
-     *
-     * @return void
-     */
-    protected function registerAgent()
-    {
-        $this->app->register(\Jenssegers\Agent\AgentServiceProvider::class);
-
-        $this->app->alias('agent', \Jenssegers\Agent\Agent::class);
-    }
-
-    /**
-     * Register the Client.
-     *
-     * @return void
-     */
-    protected function registerClient()
-    {
-        $this->app->singleton('agent.client', function ($app) {
-            return (new Client)->setAgent($app->make('agent'));
+        $this->app->singleton('agent', function ($app) {
+            return new Agent($app['request']->server());
         });
 
-        $this->app->alias('agent.client', Client::class);
+        $this->app->alias('agent', Agent::class);
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['agent', Agent::class];
     }
 }
