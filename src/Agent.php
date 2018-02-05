@@ -45,4 +45,15 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
 
         return false;
     }
+
+    /**
+     * Get the operating system (platform) name.
+     *
+     * @param  string  $userAgent
+     * @return string
+     */
+    public function os($userAgent = null)
+    {
+        return $this->platform($userAgent);
+    }
 }
