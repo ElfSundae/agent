@@ -14,25 +14,40 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
     use Concerns\HasAttributes;
 
     /**
+     * The additional properties.
+     *
+     * @var array
+     */
+    protected static $addedProperties = [
+        'WeChat' => 'MicroMessenger/[VER]',
+        'QQ' => 'QQ/[VER]',
+        'NetType' => 'NetType/[VER]',
+        'Language' => 'Language/[VER]',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(array $headers = null, $userAgent = null)
     {
         parent::__construct($headers, $userAgent);
+
+        $this->addProperties();
     }
 
     /**
-     * {@inheritdoc}
+     * Add the additional properties.
      */
-    public function version($propertyName, $type = self::VERSION_TYPE_STRING)
+    protected function addProperties()
     {
-        $version = parent::version($propertyName, $type);
+        if (! empty(static::$addedProperties)) {
+            parent::$properties = array_merge(
+                parent::$properties,
+                static::$addedProperties
+            );
 
-        if (is_string($version)) {
-            $version = str_replace(['_', ' ', '/'], '.', $version);
+            static::$addedProperties = [];
         }
-
-        return $version;
     }
 
     /**
@@ -44,6 +59,28 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
     public function versionNumber($propertyName)
     {
         return $this->version($propertyName, self::VERSION_TYPE_FLOAT);
+    }
+
+    /**
+     * Get the operating system name.
+     *
+     * @return string
+     */
+    public function os()
+    {
+        return $this->platform() ?: null;
+    }
+
+    /**
+     * Get the operating system version.
+     *
+     * @return string
+     */
+    public function osVersion()
+    {
+        if ($version = $this->version($this->os())) {
+            return str_replace('_', '.', $version);
+        }
     }
 
     /**
@@ -69,25 +106,5 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
 
         return false;
-    }
-
-    /**
-     * Get the operating system name.
-     *
-     * @return string
-     */
-    public function os()
-    {
-        return $this->platform();
-    }
-
-    /**
-     * Get the operating system version.
-     *
-     * @return string
-     */
-    public function osVersion()
-    {
-        return $this->version($this->os());
     }
 }
