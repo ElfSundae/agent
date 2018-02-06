@@ -57,8 +57,8 @@ trait HasAttributes
     {
         $data = is_array($key) ? $key : [$key => $value];
 
-        foreach ($data as $key => $value) {
-            Arr::set($this->attributes, $key, $value);
+        foreach ($data as $k => $v) {
+            Arr::set($this->attributes, $k, $v);
         }
 
         return $this;
