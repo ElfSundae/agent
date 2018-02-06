@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 class AgentTest extends TestCase
 {
     protected $ua = [
+        'Windows' => 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko',
         'iOS' => 'Mozilla/5.0 (iPad; CPU OS 5_1_3 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko ) Version/5.1 Mobile/9B176 Safari/7534.48.3',
         'Android' => 'Mozilla/5.0 (Linux; U; Android 2.4.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1',
         'WeChat' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13G34 MicroMessenger/6.6.2 NetType/WIFI Language/zh_CN',
@@ -25,6 +26,20 @@ class AgentTest extends TestCase
         $this->assertArrayHasKey('WeChat', Mobile_Detect::getProperties());
         $this->assertArrayHasKey('QQ', Mobile_Detect::getProperties());
         $this->assertArrayHasKey('NetType', Mobile_Detect::getProperties());
+    }
+
+    public function testIsProperties()
+    {
+        $agent = new Agent;
+        $agent->setUserAgent($this->ua['Windows']);
+        $this->assertTrue($agent->is('Windows'));
+        $this->assertFalse($agent->is('WeChat'));
+
+        $agent->setUserAgent($this->ua['WeChat']);
+        $this->assertTrue($agent->is('WeChat'));
+        $this->assertTrue($agent->is('MicroMessenger'));
+        $this->assertTrue($agent->isWeChat());
+        $this->assertTrue($agent->isMicroMessenger());
     }
 
     public function testVersionNumber()

@@ -26,6 +26,16 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
     ];
 
     /**
+     * Check these properties as well in the `is` method.
+     *
+     * @var array
+     */
+    protected static $checkPropertyKeys = [
+        'MicroMessenger',
+        'WeChat', 'QQ',
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(array $headers = null, $userAgent = null)
@@ -48,6 +58,25 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
 
             static::$addedProperties = [];
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function is($key, $userAgent = null, $httpHeaders = null)
+    {
+        if (parent::is($key, $userAgent, $httpHeaders)) {
+            return true;
+        }
+
+        if (
+            is_null($userAgent) && is_null($httpHeaders)
+            && in_array($key, static::$checkPropertyKeys)
+        ) {
+            return $this->version($key) !== false;
+        }
+
+        return false;
     }
 
     /**
@@ -105,5 +134,17 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __call($name, $arguments)
+    {
+        if (Str::startsWith($name, 'is')) {
+            return $this->is(substr($name, 2));
+        }
+
+        return parent::__call($name, $arguments);
     }
 }
