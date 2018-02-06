@@ -98,7 +98,6 @@ class Agent extends BaseAgent implements ArrayAccess, Arrayable, Jsonable, JsonS
         }
 
         $preferLanguage = strtolower($preferLanguage);
-
         foreach ($languages as $lang) {
             if (Str::startsWith($lang, $preferLanguage)) {
                 return true;
