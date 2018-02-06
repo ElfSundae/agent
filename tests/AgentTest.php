@@ -34,12 +34,18 @@ class AgentTest extends TestCase
         $agent->setUserAgent($this->ua['Windows']);
         $this->assertTrue($agent->is('Windows'));
         $this->assertFalse($agent->is('WeChat'));
+        $this->assertFalse($agent->is('WeChat', $this->ua['WeChat']));
 
         $agent->setUserAgent($this->ua['WeChat']);
         $this->assertTrue($agent->is('WeChat'));
         $this->assertTrue($agent->is('MicroMessenger'));
         $this->assertTrue($agent->isWeChat());
         $this->assertTrue($agent->isMicroMessenger());
+        $this->assertFalse($agent->is('foo'));
+
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('No such method exists: foo');
+        $agent->foo();
     }
 
     public function testVersionNumber()
@@ -60,6 +66,8 @@ class AgentTest extends TestCase
         $this->assertSame('iOS', $agent->os());
         $agent->setUserAgent($this->ua['Android']);
         $this->assertSame('AndroidOS', $agent->os());
+        $agent->setUserAgent('foo/bar');
+        $this->assertNull($agent->os());
     }
 
     public function testOsVersion()
@@ -69,6 +77,8 @@ class AgentTest extends TestCase
         $this->assertSame('5.1.3', $agent->osVersion());
         $agent->setUserAgent($this->ua['Android']);
         $this->assertSame('2.4.2', $agent->osVersion());
+        $agent->setUserAgent('foo/bar');
+        $this->assertNull($agent->osVersion());
     }
 
     public function testLanguage()
