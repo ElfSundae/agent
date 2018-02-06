@@ -17,6 +17,41 @@ class AgentTest extends TestCase
         $this->assertInstanceOf(Agent::class, new Agent);
     }
 
+    public function testAccessAttributes()
+    {
+        $agent = new Agent;
+        $agent->set('a', 'A')
+            ->set(['b' => 'B', 'c' => 'C']);
+        $agent['d'] = 'D';
+
+        $this->assertTrue($agent->has('a'));
+        $this->assertTrue(isset($agent['b']));
+        $this->assertFalse($agent->has('foo'));
+
+        $this->assertSame('A', $agent->get('a'));
+        $this->assertSame('B', $agent['b']);
+        $this->assertSame('bar', $agent->get('foo', 'bar'));
+        $this->assertEquals(
+            ['a' => 'A', 'b' => 'B', 'c' => 'C', 'd' => 'D'],
+            $agent->getAttributes()
+        );
+
+        $agent->remove('c', 'd');
+        $this->assertEquals(['a' => 'A', 'b' => 'B'], $agent->getAttributes());
+        $this->assertEquals(['a' => 'A', 'b' => 'B'], $agent->toArray());
+        $this->assertJson($agent->toJson());
+        $this->assertJsonStringEqualsJsonString(
+            json_encode(['a' => 'A', 'b' => 'B']),
+            $agent->toJson()
+        );
+
+        unset($agent['b']);
+        $this->assertEquals(['a' => 'A'], $agent->getAttributes());
+
+        $agent->flush();
+        $this->assertEmpty($agent->getAttributes());
+    }
+
     public function testVersion()
     {
         $agent = new Agent;

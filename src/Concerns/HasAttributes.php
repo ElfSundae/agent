@@ -14,6 +14,16 @@ trait HasAttributes
     protected $attributes = [];
 
     /**
+     * Get all of the attributes.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * Determine if the given attribute value exists.
      *
      * @param  string  $key
@@ -27,11 +37,11 @@ trait HasAttributes
     /**
      * Get the specified attribute.
      *
-     * @param  string|null  $key
+     * @param  string  $key
      * @param  mixed  $default
      * @return mixed
      */
-    public function get($key = null, $default = null)
+    public function get($key, $default = null)
     {
         return Arr::get($this->attributes, $key, $default);
     }
@@ -88,7 +98,7 @@ trait HasAttributes
      */
     public function toArray()
     {
-        return $this->attributes;
+        return $this->getAttributes();
     }
 
     /**
