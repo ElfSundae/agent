@@ -70,7 +70,7 @@ class AgentTest extends TestCase
         $this->assertFalse($agent->language('de'));
     }
 
-    public function testAccessAttributes()
+    public function testAttributes()
     {
         $agent = new Agent;
         $agent->set('a', 'A')
